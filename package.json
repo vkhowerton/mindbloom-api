@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --env-file=.env --watch src/server.js",
-    "migrate:deploy": "prisma migrate deploy"
+    "migrate:deploy": "prisma migrate deploy",
+    "seed:prod": "node prisma/seed.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
