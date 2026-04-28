@@ -3,10 +3,14 @@ import 'dotenv/config';
 import prisma from '../src/config/db.js';
 
 async function main() {
-  await prisma.moodEntry.deleteMany();
-  await prisma.journal.deleteMany();
-  await prisma.habit.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.$executeRawUnsafe(`
+    TRUNCATE TABLE
+      "MoodEntry",
+      "Journal",
+      "Habit",
+      "User"
+    RESTART IDENTITY CASCADE;
+  `);
 
   const passwordHash = await bcrypt.hash("password123", 10);
 
