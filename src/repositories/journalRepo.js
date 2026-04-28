@@ -4,7 +4,7 @@ import prisma from "../config/db.js";
 export async function findJournalsByUserId(userId) {
   return prisma.journal.findMany({
     where: { userId },
-    orderBy: { createdAt: "desc" }, // newest first (nice touch)
+    orderBy: { createdAt: "desc" },
   });
 }
 
