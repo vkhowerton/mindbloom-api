@@ -2,15 +2,22 @@ import bcrypt from 'bcrypt';
 import 'dotenv/config';
 import prisma from '../src/config/db.js';
 
+const isDev =
+  !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+
 async function main() {
-  await prisma.$executeRawUnsafe(`
-    TRUNCATE TABLE
-      "MoodEntry",
-      "Journal",
-      "Habit",
-      "User"
-    RESTART IDENTITY CASCADE;
-  `);
+  if (isDev) {
+    await prisma.$queryRaw`
+      TRUNCATE TABLE
+        "MoodEntry",
+        "Journal",
+        "Habit",
+        "User"
+      RESTART IDENTITY CASCADE;
+    `;
+
+    console.log("Development: tables truncated and IDs reset.");
+  }
 
   const passwordHash = await bcrypt.hash("password123", 10);
 
@@ -30,8 +37,8 @@ async function main() {
 
   const user3 = await prisma.user.create({
     data: {
-        email: "anna@test.com",
-        password: passwordHash,
+      email: "anna@test.com",
+      password: passwordHash,
     },
   });
 
@@ -91,8 +98,9 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((error) => {
+    console.error("Seed failed:", error);
+    process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
