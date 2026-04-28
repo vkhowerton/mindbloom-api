@@ -6,7 +6,7 @@ info:
   description: API for managing habits, moods, and journals
 
 servers:
-  - url: http://localhost:3000/api
+  - url: https://mindbloom-api-service.onrender.com/api
 
 tags:
   - name: Auth
