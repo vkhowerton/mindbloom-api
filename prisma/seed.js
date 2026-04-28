@@ -7,14 +7,14 @@ const isDev =
 
 async function main() {
   if (isDev) {
-    await prisma.$queryRaw`
+    await prisma.$executeRawUnsafe(`
       TRUNCATE TABLE
-        "MoodEntry",
-        "Journal",
-        "Habit",
-        "User"
+        mood_entries,
+        journals,
+        habits,
+        users
       RESTART IDENTITY CASCADE;
-    `;
+    `);
 
     console.log("Development: tables truncated and IDs reset.");
   }
