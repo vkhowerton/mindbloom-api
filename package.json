@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "node --env-file=.env --watch src/server.js",
     "migrate:deploy": "prisma migrate deploy",
-    "seed:prod": "node prisma/seed.js"
+    "seed:prod": "node prisma/seed.js",
+    "start": "node src/server.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
