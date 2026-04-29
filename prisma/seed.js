@@ -2,22 +2,17 @@ import bcrypt from 'bcrypt';
 import 'dotenv/config';
 import prisma from '../src/config/db.js';
 
-const isDev =
-  !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-
 async function main() {
-  if (isDev) {
-    await prisma.$executeRawUnsafe(`
-      TRUNCATE TABLE
-        mood_entries,
-        journals,
-        habits,
-        users
-      RESTART IDENTITY CASCADE;
-    `);
+  await prisma.$executeRawUnsafe(`
+    TRUNCATE TABLE
+      mood_entries,
+      journals,
+      habits,
+      users
+    RESTART IDENTITY CASCADE;
+  `);
 
-    console.log("Development: tables truncated and IDs reset.");
-  }
+  console.log("Tables truncated and IDs reset.");
 
   const passwordHash = await bcrypt.hash("password123", 10);
 
